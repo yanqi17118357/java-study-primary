@@ -20,4 +20,17 @@ public class Person {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", gender='" + gender + '\'' +
+                '}';
+    }
+
+    private void test() {
+        System.out.println("这里是静态方法");
+    }
 }

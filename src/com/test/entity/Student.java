@@ -12,4 +12,8 @@ public class Student extends Person {
     public void bye() {
         System.out.println("bye bye");
     }
+
+    public void test() {
+        System.out.println("我是学生");
+    }
 }
