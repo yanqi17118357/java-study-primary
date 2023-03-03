@@ -92,7 +92,7 @@
 >private Person() {}
 >
 >public static Person getInstance() {
->   return new Person();
+>  return new Person();
 >}
 >}
 >```
@@ -101,13 +101,13 @@
 >
 >```java
 >public class Test {
->    private static Test instance;
->    private Test(){}
->    public static Test getInstance() {
->        if (instance == null)
->            instance = new Test();
->        return instance;
->    }
+>   private static Test instance;
+>   private Test(){}
+>   public static Test getInstance() {
+>       if (instance == null)
+>           instance = new Test();
+>       return instance;
+>   }
 >}
 >```
 >
@@ -115,32 +115,32 @@
 >
 >
 >
->类的继承
+>**类的继承**
 >
->在定义不同类的时候存在一些相同属性，为了方便实用可以将这些共同属性抽象成一个父类，在定义其他子类时可以继承自该父类，减少代码的重复定义，子类可以使用父类中非私有的成员。
+>在定义不同类的时候存在一些相同属性，为了方便使用可以将这些共同属性抽象成一个父类，在定义其他子类时可以继承自该父类，减少代码的重复定义，子类可以使用父类中非私有的成员。
 >
 >如果父类存在一个有参构造方法，子类必须在构造方法中调用：
 >
 >```java
 >public class Person {
->    private String name;
->    private int age;
->    private String gender;
+>   private String name;
+>   private int age;
+>   private String gender;
 >
->    // 可以使用protected, 只能子类和同包用
->    protected Person(String name, int age, String gender) {
->        this.name = name;
->        this.age = age;
->        this.gender = gender;
->    }
+>   // 可以使用protected, 只能子类和同包用
+>   protected Person(String name, int age, String gender) {
+>       this.name = name;
+>       this.age = age;
+>       this.gender = gender;
+>   }
 >}
 >public class Student extends Person {
 >
->    public Student(String name, int age, String gender) {
->        // 父类构造调用必须在最前面
->        super(name, age, gender);
->        //...
->    }
+>   public Student(String name, int age, String gender) {
+>       // 父类构造调用必须在最前面
+>       super(name, age, gender);
+>       //...
+>   }
 >}
 >```
 >
@@ -150,12 +150,45 @@
 >
 >```java
 >public static void main(String[] args) {
->    Person person = new Student("",0,"");//使用父类类型变量，去引用一个子类对象（向上转型）
->    person.hello();//父类对象的引用相当于当做父类来使用，只能访问父类对象内容
+>   Person person = new Student("",0,"");//使用父类类型变量，去引用一个子类对象（向上转型）
+>   person.hello();//父类对象的引用相当于当做父类来使用，只能访问父类对象内容
 >}
 >```
 >
+>虽然我们这里使用的是父类类型引用的对象，但是这并不代表子类就彻底变成父类了，这里仅仅只是当做父类使用而已。
 >
+>我们也可以使用强制类型转换，将一个被当做父类使用的子类对象，转换回子类：
+>
+>```java
+>public static void main(String[] args) {
+>    Person student = new Student("",12,"");
+>    Student student1 = (Student) student;//使用强制类型转换（向下转型）
+>    student1.bye();
+>}
+>```
+>
+>但是注意，这种方式只适用于这个对象本身就是对应的子类才可以，如果本身都不是这个子类，或者说就是父类，那么会出现问题：
+>
+>```java
+>public static void main(String[] args) {
+>    Person student = new Worker("",12,"");
+>    Student student1 = (Student) student;
+>    student1.bye();
+>}
+>```
+>
+>![image-20230303192200387](C:\Users\32248\AppData\Roaming\Typora\typora-user-images\image-20230303192200387.png)
+>
+>此时我们可以使用 instanceof 关键字来对类型进行判断
+>
+>```java
+>public static void main(String[] args) {
+>    Person student = new Student("",12,"");
+>    if (student instanceof Student){
+>        System.out.println("是Student类型的");
+>    }
+>}
+>```
 >
 >
 >
@@ -269,19 +302,19 @@ Java I/O
 >
 > ```java
 > public static void main(String[] args) {
->     FileInputStream stream = null;
->     try {
->         stream = new FileInputStream("src/main/resources/test");
->         // xxx
->     } catch (FileNotFoundException e) {
->         e.printStackTrace();
->     } finally {
+>         FileInputStream stream = null;
 >         try {
->             if (stream != null) stream.close();
->         } catch (IOException e) {
+>             stream = new FileInputStream("src/main/resources/test");
+>             // xxx
+>         } catch (FileNotFoundException e) {
 >             e.printStackTrace();
+>         } finally {
+>             try {
+>                 if (stream != null) stream.close();
+>             } catch (IOException e) {
+>                 e.printStackTrace();
+>             }
 >         }
->     }
 > }
 > ```
 >
@@ -301,13 +334,13 @@ Java I/O
 >
 > ```java
 > public static void main(String[] args) {
->     try (FileInputStream stream = new FileInputStream("src/main/resources/test");) {
->         int i = stream.read();
->         System.out.println((char) i); // 只打印第一个字符
+>         try (FileInputStream stream = new FileInputStream("src/main/resources/test");) {
+>             int i = stream.read();
+>             System.out.println((char) i); // 只打印第一个字符
 > 
->     } catch (IOException e) {
->         e.printStackTrace();
->     }
+>         } catch (IOException e) {
+>             e.printStackTrace();
+>         }
 > }
 > ```
 >
@@ -317,14 +350,14 @@ Java I/O
 >
 > ```java
 > public static void main(String[] args) {
->     try (FileInputStream stream = new FileInputStream("src/main/resources/test");) {
->         int i;
->         while ((i = stream.read()) != -1) {
->             System.out.print((char) i);
+>         try (FileInputStream stream = new FileInputStream("src/main/resources/test");) {
+>             int i;
+>             while ((i = stream.read()) != -1) {
+>                 System.out.print((char) i);
+>             }
+>         } catch (IOException e) {
+>             e.printStackTrace();
 >         }
->     } catch (IOException e) {
->         e.printStackTrace();
->     }
 > }
 > ```
 >
@@ -332,14 +365,14 @@ Java I/O
 >
 > ```java
 > public static void main(String[] args) {
->     try (FileInputStream stream = new FileInputStream("src/main/resources/test");) {
->         byte[] bytes = new byte[stream.available()]; //文件字节数
->         stream.read(bytes);
->         System.out.println(new String(bytes));
+>         try (FileInputStream stream = new FileInputStream("src/main/resources/test");) {
+>             byte[] bytes = new byte[stream.available()]; //文件字节数
+>             stream.read(bytes);
+>             System.out.println(new String(bytes));
 > 
->     } catch (IOException e) {
->         e.printStackTrace();
->     }
+>         } catch (IOException e) {
+>             e.printStackTrace();
+>         }
 > }
 > ```
 >
@@ -351,13 +384,13 @@ Java I/O
 >
 >```java
 >public static void main(String[] args) {
->    try (FileOutputStream stream = new FileOutputStream("src/main/resources/test", true)) { // 追加模式 默认false
->        stream.write("Hello World!".getBytes());
->        stream.flush();  // 强制刷新
+>        try (FileOutputStream stream = new FileOutputStream("src/main/resources/test", true)) { // 追加模式 默认false
+>            stream.write("Hello World!".getBytes());
+>            stream.flush();  // 强制刷新
 >
->    } catch (IOException e) {
->        e.printStackTrace();
->    }
+>        } catch (IOException e) {
+>            e.printStackTrace();
+>        }
 >}
 >```
 >
@@ -365,17 +398,17 @@ Java I/O
 >
 >```java
 >public static void main(String[] args) {
->    try (FileInputStream stream = new FileInputStream("src/main/resources/抽瑶瑶.mp4");
->        FileOutputStream stream1 = new FileOutputStream("src/main/resources/xxx.mp4")) {
->        byte[] bytes = new byte[1024];
->        int len;
->        while ((len = stream.read(bytes)) != -1) {
->            stream1.write(bytes, 0, len);
->        }
+>        try (FileInputStream stream = new FileInputStream("src/main/resources/抽瑶瑶.mp4");
+>            FileOutputStream stream1 = new FileOutputStream("src/main/resources/xxx.mp4")) {
+>            byte[] bytes = new byte[1024];
+>            int len;
+>            while ((len = stream.read(bytes)) != -1) {
+>                stream1.write(bytes, 0, len);
+>            }
 >
->    } catch (IOException e) {
->        e.printStackTrace();
->    }
+>        } catch (IOException e) {
+>            e.printStackTrace();
+>        }
 >}
 >```
 
@@ -383,26 +416,26 @@ Java I/O
 
 > ```java
 > public static void main(String[] args) {
->     try (FileReader fileReader = new FileReader("src/main/resources/test")) {
->         System.out.println((char) fileReader.read());
->         System.out.println((char) fileReader.read());
->         System.out.println((char) fileReader.read());
->         System.out.println((char) fileReader.read());
+>         try (FileReader fileReader = new FileReader("src/main/resources/test")) {
+>             System.out.println((char) fileReader.read());
+>             System.out.println((char) fileReader.read());
+>             System.out.println((char) fileReader.read());
+>             System.out.println((char) fileReader.read());
 > 
->     } catch (IOException e) {
->         e.printStackTrace();
->     }
+>         } catch (IOException e) {
+>             e.printStackTrace();
+>         }
 > }
 > ```
 >
 > ```java
 > public static void main(String[] args) {
->     try (FileWriter writer = new FileWriter("src/main/resources/test")) {
->         writer.write("A"); // 可以直接写入字符串
+>         try (FileWriter writer = new FileWriter("src/main/resources/test")) {
+>             writer.write("A"); // 可以直接写入字符串
 > 
->     } catch (IOException e) {
->         e.printStackTrace();
->     }
+>         } catch (IOException e) {
+>             e.printStackTrace();
+>         }
 > }
 > ```
 >
@@ -412,17 +445,17 @@ Java I/O
 >
 > ```java
 > public static void main(String[] args) {
->     try (FileReader reader = new FileReader("src/main/resources/test");
->          FileWriter writer = new FileWriter("src/main/resources/xxx")) {
->         char[] chars = new char[3];
->         int len;
->         while ((len = reader.read(chars)) != -1) {
->             writer.write(chars, 0, len);
->         }
+>         try (FileReader reader = new FileReader("src/main/resources/test");
+>              FileWriter writer = new FileWriter("src/main/resources/xxx")) {
+>             char[] chars = new char[3];
+>             int len;
+>             while ((len = reader.read(chars)) != -1) {
+>                 writer.write(chars, 0, len);
+>             }
 > 
->     } catch (IOException e) {
->         e.printStackTrace();
->     }
+>         } catch (IOException e) {
+>             e.printStackTrace();
+>         }
 > }
 > ```
 >
