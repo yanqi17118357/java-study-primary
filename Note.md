@@ -92,7 +92,7 @@
 >private Person() {}
 >
 >public static Person getInstance() {
->  return new Person();
+>return new Person();
 >}
 >}
 >```
@@ -101,13 +101,13 @@
 >
 >```java
 >public class Test {
->   private static Test instance;
->   private Test(){}
->   public static Test getInstance() {
->       if (instance == null)
->           instance = new Test();
->       return instance;
->   }
+>private static Test instance;
+>private Test(){}
+>public static Test getInstance() {
+>  if (instance == null)
+>      instance = new Test();
+>  return instance;
+>}
 >}
 >```
 >
@@ -123,24 +123,24 @@
 >
 >```java
 >public class Person {
->   private String name;
->   private int age;
->   private String gender;
+>private String name;
+>private int age;
+>private String gender;
 >
->   // 可以使用protected, 只能子类和同包用
->   protected Person(String name, int age, String gender) {
->       this.name = name;
->       this.age = age;
->       this.gender = gender;
->   }
+>// 可以使用protected, 只能子类和同包用
+>protected Person(String name, int age, String gender) {
+>  this.name = name;
+>  this.age = age;
+>  this.gender = gender;
+>}
 >}
 >public class Student extends Person {
 >
->   public Student(String name, int age, String gender) {
->       // 父类构造调用必须在最前面
->       super(name, age, gender);
->       //...
->   }
+>public Student(String name, int age, String gender) {
+>  // 父类构造调用必须在最前面
+>  super(name, age, gender);
+>  //...
+>}
 >}
 >```
 >
@@ -150,8 +150,8 @@
 >
 >```java
 >public static void main(String[] args) {
->   Person person = new Student("",0,"");//使用父类类型变量，去引用一个子类对象（向上转型）
->   person.hello();//父类对象的引用相当于当做父类来使用，只能访问父类对象内容
+>Person person = new Student("",0,"");//使用父类类型变量，去引用一个子类对象（向上转型）
+>person.hello();//父类对象的引用相当于当做父类来使用，只能访问父类对象内容
 >}
 >```
 >
@@ -161,9 +161,9 @@
 >
 >```java
 >public static void main(String[] args) {
->    Person student = new Student("",12,"");
->    Student student1 = (Student) student;//使用强制类型转换（向下转型）
->    student1.bye();
+>Person student = new Student("",12,"");
+>Student student1 = (Student) student;//使用强制类型转换（向下转型）
+>student1.bye();
 >}
 >```
 >
@@ -171,29 +171,135 @@
 >
 >```java
 >public static void main(String[] args) {
->    Person student = new Worker("",12,"");
->    Student student1 = (Student) student;
->    student1.bye();
+>Person student = new Worker("",12,"");
+>Student student1 = (Student) student;
+>student1.bye();
 >}
 >```
 >
 >![image-20230303192200387](C:\Users\32248\AppData\Roaming\Typora\typora-user-images\image-20230303192200387.png)
 >
->此时我们可以使用 instanceof 关键字来对类型进行判断
+>此时我们可以使用`instanceof`关键字来对类型进行判断
 >
 >```java
 >public static void main(String[] args) {
->    Person student = new Student("",12,"");
->    if (student instanceof Student){
->        System.out.println("是Student类型的");
->    }
+>Person student = new Student("",12,"");
+>if (student instanceof Student){
+>   System.out.println("是Student类型的");
+>}
+>}
+>```
+>
+>如果变量所引用的对象是对应类型或是对应类型的子类，那么`instanceof`都会返回`true`，否则返回`false`。
+>
+>最后我们需要来特别说明一下，子类是可以定义和父类同名的属性的：
+>
+>```java
+>public class Worker extends Person{
+>String name; // 同样在子类中定义name
+>public Worker(String name, int age, String gender) {
+>   super(name, age, gender);
+>}
+>
+>public void work() {
+>   System.out.println("我是"+name+"我在工作！");
+>}
 >}
 >```
 >
 >
 >
->Object类
->方法的重写
+>所以说，我们在使用时，实际上这里得到的结果为`null`：
+>
+>![image-20230303193425077](C:\Users\32248\AppData\Roaming\Typora\typora-user-images\image-20230303193425077.png)
+>
+>---
+>
+>
+>
+>**Object类**
+>
+>实际上所有类都默认继承自Object类
+>
+>既然所有的类都默认继承自Object，我们来看看这个类里面有哪些内容：
+>
+>```java
+>public class Object {
+>
+>    private static native void registerNatives();   //标记为native的方法是本地方法，底层是由C++实现的
+>    static {
+>        registerNatives();   //这个类在初始化时会对类中其他本地方法进行注册，本地方法不是我们SE中需要学习的内容，我们会在JVM篇视频教程中进行介绍
+>    }
+>
+>    //获取当前的类型Class对象，这个我们会在最后一章的反射中进行讲解，目前暂时不会用到
+>    public final native Class<?> getClass();
+>
+>    //获取对象的哈希值，我们会在第五章集合类中使用到，目前各位小伙伴就暂时理解为会返回对象存放的内存地址
+>    public native int hashCode();
+>
+>      //判断当前对象和给定对象是否相等，默认实现是直接用等号判断，也就是直接判断是否为同一个对象
+>      public boolean equals(Object obj) {
+>        return (this == obj);
+>    }
+>  
+>    //克隆当前对象，可以将复制一个完全一样的对象出来，包括对象的各个属性
+>    protected native Object clone() throws CloneNotSupportedException;
+>
+>    //将当前对象转换为String的形式，默认情况下格式为 完整类名@十六进制哈希值
+>    public String toString() {
+>        return getClass().getName() + "@" + Integer.toHexString(hashCode());
+>    }
+>
+>    //唤醒一个等待当前对象锁的线程，有关锁的内容，我们会在第六章多线程部分中讲解，目前暂时不会用到
+>    public final native void notify();
+>
+>    //唤醒所有等待当前对象锁的线程，同上
+>    public final native void notifyAll();
+>
+>    //使得持有当前对象锁的线程进入等待状态，同上
+>    public final native void wait(long timeout) throws InterruptedException;
+>
+>    //同上
+>    public final void wait(long timeout, int nanos) throws InterruptedException {
+>        ...
+>    }
+>
+>    //同上
+>    public final void wait() throws InterruptedException {
+>        ...
+>    }
+>
+>    //当对象被判定为已经不再使用的“垃圾”时，在回收之前，会由JVM来调用一次此方法进行资源释放之类的操作，这同样不是SE中需要学习的内容，这个方法我们会在JVM篇视频教程中详细介绍，目前暂时不会用到
+>    protected void finalize() throws Throwable { }
+>}
+>```
+>
+>**方法的重写**
+>
+>- equals()方法重写
+>
+>  ```java
+>  @Override
+>  public boolean equals(Object obj) {
+>      if (obj == null) return false;
+>      if (obj instanceof Person) {
+>          Person person = (Person) obj;
+>          return this.name.equals(person.name) && this.age == person.age && this.gender.equals(person.gender);
+>      }
+>      return false;
+>  }
+>  // 此时使用equals方法判断就是逻辑判断，而不是看对象的hashcode
+>  ```
+>
+>- 关于重写父类方法，使用父类引用子类对象
+>
+>  ```java
+>  ```
+>
+>  
+>
+>
+>
 >抽象类
 >接口
 >

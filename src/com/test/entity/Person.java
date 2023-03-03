@@ -1,18 +1,23 @@
 package com.test.entity;
 
 public class Person {
-    private String name;
-    private int age;
-    private String gender;
+    String name;
+    int age;
+    String gender;
 
-    // 可以使用protected, 只能子类和同包用
-    protected Person(String name, int age, String gender) {
+    public Person(String name, int age, String gender) {
         this.name = name;
         this.age = age;
         this.gender = gender;
     }
 
-    public void hello() {
-        System.out.println("你好！");
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (obj instanceof Person) {
+            Person person = (Person) obj;
+            return this.name.equals(person.name) && this.age == person.age && this.gender.equals(person.gender);
+        }
+        return false;
     }
 }
