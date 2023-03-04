@@ -10,27 +10,4 @@ public class Person {
         this.age = age;
         this.gender = gender;
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) return false;
-        if (obj instanceof Person) {
-            Person person = (Person) obj;
-            return this.name.equals(person.name) && this.age == person.age && this.gender.equals(person.gender);
-        }
-        return false;
-    }
-
-    @Override
-    public String toString() {
-        return "Person{" +
-                "name='" + name + '\'' +
-                ", age=" + age +
-                ", gender='" + gender + '\'' +
-                '}';
-    }
-
-    private void test() {
-        System.out.println("这里是静态方法");
-    }
 }

@@ -2,18 +2,33 @@ package com.test.entity;
 
 import com.test.entity.Person;
 
-public class Student extends Person {
-    String name;
+public class Student extends Person implements Study, Cloneable{
 
     public Student(String name, int age, String gender) {
         super(name, age, gender);
     }
 
-    public void bye() {
-        System.out.println("bye bye");
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
+    @Override
+    public String toString() {
+        return "Student{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", gender='" + gender + '\'' +
+                '}';
+    }
+
+    @Override
+    public void study() {
+
+    }
+
+    @Override
     public void test() {
-        System.out.println("我是学生");
+        Study.super.test();
     }
 }
