@@ -1,16 +1,24 @@
 package com.test;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.math.RoundingMode;
+
+import java.util.Arrays;
 
 public class Main {
 
+
     public static void main(String[] args) {
-        BigDecimal i = BigDecimal.valueOf(10);
-        i = i.divide(BigDecimal.valueOf(3), 100, RoundingMode.DOWN);
-        //计算10/3的结果，精确到小数点后100位
-        //RoundingMode是舍入模式，就是精确到最后一位时，该怎么处理，这里CEILING表示向上取整，FLOOR表示向下取整
-        System.out.println(i);
+        int[] arr = new int[10];
+        int[] arr2 = new int[10];
+        System.out.println(equals(arr2,arr));
+
+    }
+
+    private static boolean equals(int[] a, int[] b) {
+        int length = a.length;
+        if (b.length != length) return false;
+        for (int i = 0; i < length; i++) {
+            if (a[i] != b[i]) return false;
+        }
+        return true;
     }
 }
