@@ -5,11 +5,13 @@ import com.test.entity.Study;
 public class Main {
 
     public static void main(String[] args) {
-        test(a -> "今天学会了"+a);   //参数直接写成lambda表达式
+        Main main = new Main();
+        Study study = main::lbwnb;   //成员方法因为需要具体对象使用，所以说只能使用 对象::方法名 的形式
+        System.out.println(study.lbwnb());
     }
 
-    private static void test(Study study){
-        System.out.println(study.study(10));
+    public String lbwnb(){
+        return "卡布奇诺今犹在，不见当年倒茶人。";
     }
 }
 
