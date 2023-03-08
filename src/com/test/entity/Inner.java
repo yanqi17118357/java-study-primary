@@ -1,7 +1,7 @@
 package com.test.entity;
 
 public class Inner extends Test{
-    Student makeStudent() {
+    public Student makeStudent() {
         return new Student() {
             @Override
             public void test() {
