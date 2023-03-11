@@ -1,17 +1,20 @@
 package com.test;
 
-import com.test.entity.Study;
+
+import java.io.IOException;
 
 public class Main {
 
-    public static void main(String[] args) {
-        Main main = new Main();
-        Study study = main::lbwnb;   //成员方法因为需要具体对象使用，所以说只能使用 对象::方法名 的形式
-        System.out.println(study.lbwnb());
-    }
-
-    public String lbwnb(){
-        return "卡布奇诺今犹在，不见当年倒茶人。";
+    public static void main(String[] args) throws IOException {
+        try {
+            System.out.println("there is try");
+            int a = 1;
+            a /= 0;
+        } catch (RuntimeException e){  //使用运行时异常同样可以捕获到
+            System.out.println("捕获到异常");
+        } finally {
+            System.out.println("there is finally");
+        }
     }
 }
 
