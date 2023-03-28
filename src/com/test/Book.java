@@ -1,11 +1,25 @@
 package com.test;
 
-public class Book {
+import java.io.Serializable;
+
+public class Book implements Serializable {
     private String title;
     private String author;
     private int price;
 
-    private Book(String title, String author, int price) {
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public Book(String title, String author, int price) {
         this.title = title;
         this.author = author;
         this.price = price;
@@ -13,43 +27,8 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" +
-                "title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", price=" + price +
-                '}';
+        return "《"+title+"》作者："+author+"（"+price+"￥）";
     }
 
-    //建造者模式
-    public static BookBuilder builder() {
-        return new BookBuilder();
-    }
 
-    public static class BookBuilder {
-        private String title;
-        private String author;
-        private int price;
-
-        private BookBuilder() {
-        }
-
-        public BookBuilder title(String title) {
-            this.title = title;
-            return this;
-        }
-
-        public BookBuilder author(String author) {
-            this.author = author;
-            return this;
-        }
-
-        public BookBuilder price(int price) {
-            this.price = price;
-            return this;
-        }
-
-        public Book build() {
-            return new Book(title, author, price);
-        }
-    }
 }
