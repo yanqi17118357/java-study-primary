@@ -1,53 +1,55 @@
 package com.test;
 
-import com.test.collection.LinkedQueue;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) {
-        TreeNode<Character> a = new TreeNode<>('A');
-        TreeNode<Character> b = new TreeNode<>('B');
-        TreeNode<Character> c = new TreeNode<>('C');
-        TreeNode<Character> d = new TreeNode<>('D');
-        TreeNode<Character> e = new TreeNode<>('E');
-        TreeNode<Character> f = new TreeNode<>('F');
+    public static void main(String[] args) throws IOException {
+        File source = new File(".");
+        File destination = new File("../dest");
 
-        a.left = b;
-        a.right = c;
-        b.left = d;
-        b.right = e;
-        c.right = f;
-        levelOrder(a);
+        if (!destination.exists()) {
+            destination.mkdir();
+        }
 
+        copyFolder(source, destination);
     }
 
-    // 前序遍历
-    public static <T> void preOrder(TreeNode<T> root) {
-        if (root == null) return;
-        System.out.print(root.element + " ");
-        preOrder(root.left);
-        preOrder(root.right);
-    }
+    private static void copyFolder(File source, File destination) throws IOException {
+        if (source.isDirectory()) {
+            if (!destination.exists()) {
+                destination.mkdir();
+            }
 
-    // 层序遍历
-    private static <T> void levelOrder(TreeNode<T> root){
-        LinkedQueue<TreeNode<T>> queue = new LinkedQueue<>();  //创建一个队列
-        queue.offer(root);    //将根结点丢进队列
-        while (!queue.isEmpty()) {   //如果队列不为空，就一直不断地取出来
-            TreeNode<T> node = queue.poll();   //取一个出来
-            System.out.print(node.element);  //打印
-            if(node.left != null) queue.offer(node.left);   //如果左右孩子不为空，直接将左右孩子丢进队列
-            if(node.right != null) queue.offer(node.right);
+            String[] strings = source.list();
+            for (String string : strings) {
+                // 此方法是根据子路径名和父File对象创建子File对象
+                File src = new File(source, string);
+                File dest = new File(destination, string);
+                copyFolder(src, dest);
+                System.out.println(string);
+            }
+        } else {
+            try (FileInputStream inputStream = new FileInputStream(source);
+                 FileOutputStream outputStream = new FileOutputStream(destination)) {
+                byte[] bytes = new byte[1024];
+                int len;
+                while ((len = inputStream.read(bytes)) > 0) {
+                    outputStream.write(bytes, 0, len);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
     }
-
-    public static class TreeNode<E> {
-        public E element;
-        public TreeNode<E> left, right;
-
-        public TreeNode(E element) {
-            this.element = element;
-        }
-    }
-
 }
+
+
+
+
+
+
 
