@@ -1,17 +1,21 @@
 package com.test;
 
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+
 public class Main {
 
-    public static void main(String[] args) throws ClassNotFoundException {
-        //通过包名
-        Class<?> clazz = Class.forName("com.test.Student");
-        //通过new一个对象
-        Class<?> clazz2 = new Student().getClass();
-        //直接类.class
-        Class<?> clazz3 = Student.class;
+    public static void main(String[] args) throws ReflectiveOperationException {
+        Integer i = new Integer(10);
 
-        Class<?> c = int.class;
+        Field value = Integer.class.getDeclaredField("value");
+        value.setAccessible(true);
+
+        value.set(i, 19);
+        value.set(i, 20);
+        System.out.println(value.get(i));
+
 
     }
 }

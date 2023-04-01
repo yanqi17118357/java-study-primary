@@ -1,7 +1,7 @@
 package com.test;
 
 public class Student {
-    String name;
+    private String name;
     int age;
 
     public void test() {
