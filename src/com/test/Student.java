@@ -1,10 +1,9 @@
 package com.test;
 
+@Test({"hello, world", "nihao"})
 public class Student {
-    private String name;
-    int age;
 
-    public void test() {
+    @Test("field")
+    public void test() {};
 
-    }
 }
