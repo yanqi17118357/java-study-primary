@@ -1,24 +1,26 @@
 package com.test;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
 
     public static void main(String[] args) throws InterruptedException {
-        Thread main = Thread.currentThread();
-        Thread t = new Thread(() -> {
-            while (true) {
-                System.out.println("我是守护线程");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+        List<Integer> list = new ArrayList<>();
+        new Thread(() -> {
+            for (int i = 0; i < 1000; i++) {
+                list.add(i);
             }
-        });
+        }).start();
 
-        t.setDaemon(true);
-        t.start();
+        new Thread(() -> {
+            for (int i = 0; i < 1000; i++) {
+                list.add(i);
+            }
+        }).start();
 
-        Thread.sleep(3000);
+        Thread.sleep(1000);
+        System.out.println(list.size());
     }
 }
